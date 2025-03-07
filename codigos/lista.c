@@ -8,6 +8,7 @@ typedef struct Ponto {
 } Ponto;
 
 Ponto *comeco = NULL;
+int length = 0;
 
 void addComeco(float x, float y){
     Ponto *p = (Ponto*) malloc(sizeof(Ponto)); // Alocação dinamica
@@ -35,6 +36,33 @@ void addFim(float x, float y){
     }
 }
 
+void addIndex(float x, float y, int index){ //função que adiciona itens em posiçoes arbitrarias
+    
+    Ponto *novo = (Ponto*) malloc(sizeof(Ponto));
+    novo->x = x;
+    novo->y = y;
+
+    if(index > length){
+        printf("Posição Inválida !");
+    } else {
+        if(index == 0){ // verifica se é o primeiro item da lista
+            novo->prox = comeco;
+            comeco = novo;
+        } else { // Caso não seja o primeiro item da lista, buscaremos o ponto referente ao index
+            Ponto *aux = comeco; 
+            int i = 0;
+            while(i != index-1){
+                aux = aux->prox;
+                i++;
+            }
+            novo->prox = aux->prox;
+            aux->prox = novo;
+        }
+    length ++;
+    }
+
+}
+
 void addFimRecursivamente(Ponto *aux, float x, float y){
 
     if(aux->prox == NULL){
@@ -46,7 +74,25 @@ void addFimRecursivamente(Ponto *aux, float x, float y){
     } else {
         addFimRecursivamente(aux->prox,x,y);
     }
+}
 
+void removeIndex(int index){
+    if(index > length || length == 0){
+        printf("Posicao Invalida ou Lista Vazia \n");
+    } else {
+        if(index == 0){
+            comeco = comeco->prox;
+        } else {
+            Ponto *aux = comeco;
+            int i = 0;
+            while(i != index-1){
+                aux = aux->prox;
+                i++;
+            }
+            aux->prox = aux->prox->prox;
+        }
+    length--;
+    }
 }
 
 void imprimir(){
@@ -59,7 +105,7 @@ void imprimir(){
 
 void imprimirRecursivamente(Ponto *p){
     if(p == NULL)
-        printf("\n Deu certo");
+        printf("\n Acabou");
     
     printf("( %.1f, %.1f )\n", p->x,p->y);
     imprimirRecursivamente(p->prox);
@@ -67,12 +113,23 @@ void imprimirRecursivamente(Ponto *p){
 
 int main(){
 
-    addComeco(1,2);
-    addComeco(5,4);
-    addComeco(6,7);
 
-    addFimRecursivamente(comeco,8,9);
-    addFimRecursivamente(comeco,10,11);
+    addIndex(1,1,0);
+    addIndex(2,4,1);
+    addIndex(4,16,2);
+
+    addIndex(3,9,2);
+    addIndex(0,0,0);
+
+    removeIndex(0);
+    removeIndex(2);
+    
+    // addComeco(1,2);
+    // addComeco(5,4);
+    // addComeco(6,7);
+
+    // addFimRecursivamente(comeco,8,9);
+    // addFimRecursivamente(comeco,10,11);
 
     imprimirRecursivamente(comeco);
 
