@@ -123,10 +123,10 @@ int main(){
 
     removeIndex(0);
     removeIndex(2);
-    
+
     // addComeco(1,2);
     // addComeco(5,4);
-    // addComeco(6,7);
+    // addComeco(6,7); 
 
     // addFimRecursivamente(comeco,8,9);
     // addFimRecursivamente(comeco,10,11);
