@@ -19,16 +19,38 @@ int busca_binaria(int array[],int tamanho, int valor){
     }
 
     return -1;
+}
+
+
+int busca_binaria_recursiva(int *vet, int chave, int inicio, int fim){
+    int meio;
+    if(inicio <= fim){
+        meio = (inicio + fim)/2;
+
+        if(vet[meio] == chave)
+            return meio;
+        else{
+            if(vet[meio] > chave){
+                fim = meio - 1;
+               return busca_binaria_recursiva(vet,chave,inicio,fim);
+            } else {
+                inicio = meio + 1;
+                return busca_binaria_recursiva(vet,chave,inicio,fim);
+            }
+                
+        }        
+    }
+
+    return -1; //elemento não encontrado
 
 }
 
 int main(){
     int array[13] = {13,14,19,43,47,52,65,82,89,91,108,133,139};
 
-    int valor = 0;
-
-    if(busca_binaria(array, 13, valor) >= 0)
-        printf("Valor encontrado : %d \n", busca_binaria(array, 13, valor));
+    int chave = 89, inicio = 0, fim = 12;
+    if(busca_binaria_recursiva(array, chave, inicio, fim) >= 0)
+        printf("Valor encontrado : %d \n", busca_binaria_recursiva(array, chave,inicio,fim));
     else
         printf("Valor nao encontrado\n");
 }
