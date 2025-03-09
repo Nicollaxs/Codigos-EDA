@@ -28,22 +28,18 @@ int busca_binaria_recursiva(int *vet, int chave, int inicio, int fim){
         meio = (inicio + fim)/2;
 
         if(vet[meio] == chave)
-            return meio;
-        else{
-            if(vet[meio] > chave){
-                fim = meio - 1;
-               return busca_binaria_recursiva(vet,chave,inicio,fim);
-            } else {
-                inicio = meio + 1;
-                return busca_binaria_recursiva(vet,chave,inicio,fim);
-            }
+            return meio; //retorna a posição se encontrou
+       
+        if(vet[meio] > chave)
+            return busca_binaria_recursiva(vet,chave,inicio,meio - 1); //retorna o valor da chamada recursiva
+            
+        return busca_binaria_recursiva(vet,chave,meio + 1,fim); //retorna o valor da chamada recursiva
                 
-        }        
+        }  
+   
+        return -1; //elemento não encontrado
+
     }
-
-    return -1; //elemento não encontrado
-
-}
 
 int main(){
     int array[13] = {13,14,19,43,47,52,65,82,89,91,108,133,139};
