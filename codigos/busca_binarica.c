@@ -38,8 +38,7 @@ int busca_binaria_recursiva(int *vet, int chave, int inicio, int fim){
         }  
    
         return -1; //elemento não encontrado
-
-    }
+}
 
 int main(){
     int array[13] = {13,14,19,43,47,52,65,82,89,91,108,133,139};
