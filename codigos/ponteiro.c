@@ -6,6 +6,6 @@ int main(){
     int *p = &a;
     int **pp = &p;
 
-    printf("%d \n",**pp);
+    printf("%d \n",*pp);
 
 }
