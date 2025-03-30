@@ -14,7 +14,7 @@ int particiona(int *vet, int inicio, int fim){
     for (int j = inicio; j < fim; j++) {
         if (vet[j] <= pivo) {
             i++;
-            swap(&vet[i], &vet[j]);
+            swap(&vet[i], &vet[j]); //caso entre aqui é feita uma troca com os mesmo indices
         }
     }
     swap(&vet[i + 1], &vet[fim]);
@@ -39,12 +39,12 @@ int main(){
     int vet[] = {1, 8, 16, 4, 9, 37};
     int tamanho = sizeof(vet) / sizeof(vet[0]);
 
-    printf("Vetor antes da ordenação: \n");
+    printf("Vetor antes da ordenacao: \n");
     imprimir(vet, tamanho);
 
     quickSort(vet, 0, tamanho - 1);
 
-    printf("Vetor depois da ordenação: \n");
+    printf("Vetor depois da ordenacao: \n");
     imprimir(vet, tamanho);
 
     return 0;
