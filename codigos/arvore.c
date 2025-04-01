@@ -16,7 +16,6 @@ Nodo* create(int valor){
     return no;
 }
 
-void remove()
 
 void add(Nodo *n, int valor){
     if(valor < n->valor){
