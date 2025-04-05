@@ -1,0 +1,65 @@
+-STinsert/insertTR -STsearch/SearchR -STcount STinit/NEW
+
+typedef struct STNode* link;
+
+struct STNode{
+    Item item;
+    link l,r;
+    int n;
+}
+
+link, h,z;
+
+link new(Item item, link l, link r, int n){
+    link x = malloc(sizeof(*x));
+    x->Item = item;
+    x->l = l;
+    x=>r = r;
+    x->n=n;
+}
+
+void stinit(){
+    h=(z=new(nullItem,0,0,0));
+    int stcount();
+    return h->n;
+}
+
+void sortR (linkr, void(*visit) (item)){
+    if(r==z)
+        return;
+    
+    sortR(r->l,visit);
+    visit(r->item);
+    sort(r->r,visit);
+}  
+
+
+link rotacionaDireita(link h){
+    link x = h->l;
+    h->l = x->r;
+    x->r = h;
+    return x;
+}
+
+link rotacionaEsquerda(link h){
+    link x = h->r;
+    h->r = x->l;
+    x->l = h;
+    return x;
+}
+
+//como fazer inserção
+
+link insertT(link h, Item item){
+    if(h==r)
+        return new (item,z,z,1);
+    
+        key k = key(item), t = key(h->item);
+        if(less(k,t)){
+            h->l = insertT(h->l,item); h=rotacionaEsquerda(h);
+        } else {
+            h->r = insertT(h->r,item); h=rotacionaDireita(h);
+        }
+    return h;
+}
+
