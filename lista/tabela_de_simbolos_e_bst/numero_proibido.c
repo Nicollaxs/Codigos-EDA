@@ -13,7 +13,7 @@ typedef struct STnode{
     link l;
     int cor;
     int n;
-}Stnode;
+}STnode;
 
 link h,z;
 
@@ -22,7 +22,7 @@ link new(int chave){
     link x = malloc(sizeof(STnode));
     x->chave = chave;
     x->l = x->r = z;
-    x->cor = RED
+    x->cor = RED;
     x->n = 1;
 
     return x;
@@ -30,21 +30,24 @@ link new(int chave){
 
 int busca(link h, int chave){
 
+    if(h == z)
+        return 0;
+
     if(h->chave == chave)
-        return chave;
+        return 1;
         
     if(h->chave > chave)
-        busca(h->l,chave)
+       return busca(h->l,chave);
     
     if(h->chave < chave)
-        busca(h->r,chave)
+        return busca(h->r,chave);
 
     return -1;
 }
 
 link rotacionaEsq(link h){
     link x = h->r;
-    h->l = x->l;
+    h->r = x->l;
     x->l = h;
 
     x->cor = h->cor;
@@ -59,21 +62,21 @@ link rotacionaEsq(link h){
 
 link rotacionaDir(link h){
     link x = h->l;
-    h->l = x->l;
+    h->l = x->r;
     x->r = h;
 
     x->cor = h->cor;
     h->cor = RED;
 
     x->n = h->n;
-    h->n = h->l->n + h->r->n;
+    h->n = h->l->n + h->r->n + 1;
 
     return x;
 }
 
 int isRed(link h){
     if(h == z)
-        return;
+        return 0;
     
     return h->cor == RED;
 }
@@ -114,16 +117,50 @@ link insert(link h, int chave){
 
 void imprime(link h){
     if(h == z)
-        return
+        return;
     
     imprime(h->l);
-    printf("%d", h->chave);
+    printf("%d\n", h->chave);
     imprime(h->r);
+}
+
+void printArvore(link h, int nivel) {
+    if (h == z) return;
+
+    for (int i = 0; i < nivel; i++)
+        printf("  ");
+
+    printf("%d (%s)\n", h->chave, h->cor == RED ? "R" : "B");
+
+    printArvore(h->l, nivel + 1);
+    printArvore(h->r, nivel + 1);
 }
 
 int main(){
 
-    
+    z = malloc(sizeof(STnode));
+    z->l = z->r = z;
+    z->cor = BLACK;
+    z->n = 0;
+
+    h = z;
+
+    int n;
+    scanf("%d",&n);
+
+    for(int i = 0; i < n; i++){
+        int numero;
+        scanf("%d", &numero);
+        h = insert(h,numero);
+    }
+
+    int entrada;
+    while(scanf("%d", &entrada) == 1){
+        if(busca(h,entrada))
+            printf("sim\n");
+        else 
+            printf("nao\n");
+    }
 
     return 0;
 }
