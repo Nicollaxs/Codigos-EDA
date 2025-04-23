@@ -51,25 +51,21 @@ void grow() {
     free(t);
 }
 
-// Inserção com hashing duplo
-bool insert(Item item) {
-    int i = hash(key(item), M);
-    int h = hashtwo(key(item), M);
-    int c = maxCol;
+int grau(int chave){
+    int i = hash(chave,M);
+    int h = hastwo(chave,M);
 
-    while (c && !null(ht[i])) {
+    int c = maxCol;
+    int qtd = 0;
+    while(c && !null(ht[i])){
+        qtd++;
         i = (i + h) % M;
         c--;
     }
 
-    if (!c) {
-        grow();
-        return insert(item);
-    }
-
-    ht[i] = item;
-    return true;
+    return qtd;
 }
+
 
 int grau(int chave){
     int i = hash(chave, M);
@@ -94,6 +90,28 @@ int grau(int chave){
     }
 
     return qtd;
+}
+
+
+// Inserção com hashing duplo
+bool insert(Item item) {
+    int i = hash(key(item), M);
+    int h = hashtwo(key(item), M);
+    int c = maxCol;
+
+    while (c && !null(ht[i])) {
+        i = (i + h) % M;
+        c--;
+    }
+
+    if (!c) {
+        grow();
+        return insert(item);
+    }
+
+    ht[i] = item;
+    return true;
+}
 
 // Busca com hashing duplo
 Item search(int chave) {
