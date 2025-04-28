@@ -37,12 +37,14 @@ void HTinsert(Item *item){
 Item* HTsearch(int chave){
     int i = hash(chave,M);
 
-    while(!null(ht[i])){
-        if(ht[i]->chave == chave){
-            return ht[i];
+    Item *p = ht[i];
+
+    while(!null(p)){
+        if(p->chave == chave){
+            return p;
         }
 
-        i = (i + 1) % M;
+        p = p->prox;
     }
 
     return NULL;
