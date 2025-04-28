@@ -32,7 +32,7 @@ int HTcount() {
     return N;
 }
 
-void HTinsert(Item item) {
+void HTinsert(Item item) { 
     int v = key(item);
     int i = hash(v, M);
 

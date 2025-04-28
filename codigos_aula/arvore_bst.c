@@ -46,30 +46,6 @@ int STcount() {
     return h->n;
 }
 
-// Percurso em ordem (in-order)
-void sortR(link r, void (*visit)(Item)) {
-    if (r == z) return;
-    sortR(r->l, visit);
-    visit(r->item);
-    sortR(r->r, visit);
-}
-
-// Rotação à direita
-link rotacionaDireita(link h) {
-    link x = h->l;
-    h->l = x->r;
-    x->r = h;
-    return x;
-}
-
-// Rotação à esquerda
-link rotacionaEsquerda(link h) {
-    link x = h->r;
-    h->r = x->l;
-    x->l = h;
-    return x;
-}
-
 // Inserção recursiva
 link insertT(link h, Item item) {
     if (h == z)
