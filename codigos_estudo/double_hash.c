@@ -97,17 +97,23 @@ int grau(Item *ht, int chave){
     int h = hashtwo(chave,M);
 
     int qtd = 0;
+    int c = MAXCOL;
 
-    if(!null(ht[i]) && !eq(key(ht[i]),chave)){
+    if(!eq(key(ht[i]),chave)){
         qtd++;
+        c --;
         i = (i + h) % M;
     } else {
         return 0;
     }
 
-    while(!null(ht[i]) && !eq(key(ht[i]),chave)){
+    while(c && !eq(key(ht[i]),chave)){
         i = (i + h) % M;
         qtd++;
+    }
+
+    if(!c){
+        return MAXCOL;
     }
 
     return qtd;
