@@ -103,6 +103,23 @@ void printArvore(link h, int nivel) {
     printArvore(h->r, nivel + 1);
 }
 
+link STsearch(link ht, int chave){
+
+    if(ht == z){
+        return NULL;
+    }
+
+    if(ht->chave == chave){
+        return ht;
+    }
+
+    if(ht->chave > chave)
+        return STsearch(ht->l, chave);
+    if(ht->chave < chave)
+        return STsearch(ht->r, chave);
+
+}
+
 
 int main(){
 
@@ -117,6 +134,14 @@ int main(){
     h = insert(h,7);
     h = insert(h,15);
     h = insert(h,11);
+
+    link busca = STsearch(h,7);
+
+    if(busca != NULL){
+        printf("Item achado : %d\n", busca->chave);
+    } else {
+        printf("Item não achado.\n");
+    }
 
     printf("Árvore Red-Black:\n");
     printArvore(h, 0);

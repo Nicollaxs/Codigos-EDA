@@ -1,10 +1,10 @@
-#include <stdio.c>
-#include <stdlib.c>
+#include <stdio.h>
+#include <stdlib.h>
 
-#define hash(v,M) ((V%M))
-#define key(A) (A.chave)
-#define eq(A,B) ((A == B))
-#define null(A) (A == NULL);
+#define hash(v,M) ((v%M))
+#define key(A) (A->chave)
+#define eq(A,B) ((A) == (B))
+#define null(A) (A == NULL)
 
 typedef struct Item{
     int chave;
@@ -21,7 +21,7 @@ void HTinit(int max){
     ht = malloc(sizeof(Item*) * M);
 
     for(int i = 0; i < M; i ++){
-        ht[i] = NULLItem;
+        ht[i] = NULL;
     }
 }
 
@@ -47,7 +47,7 @@ Item* HTsearch(int chave){
         i = (i + 1) % M;
     }
 
-    return NULLItem;
+    return NULL;
 }
 
 void grau(Item **ht){
@@ -62,7 +62,7 @@ void grau(Item **ht){
             p = p->prox;
         }
 
-        printf("O total de colisões : %d\n",  col);
+        printf("O total de colisões no indice %d : %d\n", i, col - 1); //O primeiro item não é colisão, então tem que ter o col - 1.
 
     }
 }

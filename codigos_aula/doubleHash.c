@@ -94,6 +94,7 @@ int grau(int chave){
     }
 
     return qtd;
+}
 
 // Busca com hashing duplo
 Item search(int chave) {
