@@ -33,7 +33,7 @@ Graph graphInit(int v) {
     g->e = 0;
     g->adj = matrizInit(v, v, 0);
     return g;
-}
+} 
 
 // Cria uma aresta
 Edge edge(int v, int w) {
