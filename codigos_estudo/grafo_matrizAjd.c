@@ -4,8 +4,8 @@
 //matrizInit GraphInit Edge GraphInsert GraphRemove 
 
 typedef struct Graph{
-    int v;
-    int e;
+    int v; //Quantidade de vértices
+    int e; //quantidade de arestas
     int **adj;
 }*Graph;
 
