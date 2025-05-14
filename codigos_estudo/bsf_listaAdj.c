@@ -116,32 +116,38 @@ void insertEdge(Grafo g, Edge e)
     g->e++;
 }
 
-// void removeEdge(Grafo g, int v, int w)
-// {
-//     link atual = g->adj[v];
-//     link anterior = NULL;
+void removeEdge(Grafo g, int v, int w)
+{
+    link atual = g->adj[v];
+    link anterior = NULL;
 
-//     while (atual)
-//     {
-//         if (atual->v == w)
-//         {
-//             if (anterior == NULL)
-//                 g->adj[v] = atual->prox;
-//             else
-//                 anterior->prox = atual->prox;
+    while (atual)
+    {
+        if (atual->v == w)
+        {
+            if (anterior == NULL)
+                g->adj[v] = atual->prox;
+            else
+                anterior->prox = atual->prox;
 
-//             free(atual);
-//             return;
-//         }
+            free(atual);
+            return;
+        }
 
-//         anterior = atual;
-//         atual = atual->prox;
-//     }
-// }
+        anterior = atual;
+        atual = atual->prox;
+    }
+}
 
-// void removeE(){
+void removeE(Grafo g, Edge e){
 
-// }
+    int v = e.v;
+    int w = e.w;
+
+    removeEdge(g,v,w);
+    removeEdge(g,w,v);
+
+}
 
 void bfs(Grafo g, int start)
 {
