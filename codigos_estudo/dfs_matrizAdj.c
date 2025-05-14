@@ -19,7 +19,7 @@ int count = 0;
 
 Grafo graphInit(int V){
 
-    Grafo g = malloc(sizeof(**g));
+    Grafo g = malloc(sizeof(*g));
     g->V = V;
     g->e = 0;
     g->adj = matrizInit(V,V,0);
@@ -69,7 +69,7 @@ void removeEdge(Grafo g, Edge e){
 
     g->adj[v][w] = 0;
     g->adj[w][v] = 0;
-    g->e = --;
+    g->e--;
 }
 
 void dfs(Grafo g, Edge e){
@@ -79,7 +79,7 @@ void dfs(Grafo g, Edge e){
 
     for(int i = 0; i < g->V; i++){
         if(g->adj[w][i] == 1 && pre[i] == 0){
-            printf("( %d , %d )\n", e.w, e.i);
+            printf("( %d , %d )\n", e.w, i);
             dfs(g, edge(w,i));
         }
     }
