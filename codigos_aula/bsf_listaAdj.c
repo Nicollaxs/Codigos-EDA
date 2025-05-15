@@ -152,18 +152,20 @@ void removeE(Grafo g, Edge e){
 void bfs(Grafo g, int start)
 {
     enqueue(start);
+    visitados[start] = contador++;
 
     while (comeco != NULL)
     {
 
         int a = dequeue();
-        visitados[a] = contador++;
 
         for (link l = g->adj[a]; l != NULL; l = l->prox)
         {
             if (visitados[l->v] == -1)
             {
                 enqueue(l->v);
+                visitados[l->v] = contador++;
+
             }
         }
     }
