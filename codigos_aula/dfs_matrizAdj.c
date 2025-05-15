@@ -1,44 +1,83 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//MatrizInit Insert Remove Edge 
+// MatrizInit Insert Remove Edge
 
-typedef struct Grafo{
+typedef struct Grafo
+{
     int V;
     int e;
     int **adj;
-}*Grafo;
+} *Grafo;
 
-typedef struct Edge{
+typedef struct Edge
+{
     int v;
     int w;
-}Edge;
+} Edge;
 
+typedef struct Pilha
+{
+    int v;
+    struct Pilha *prox;
+} Pilha;
+
+Pilha *topo;
 int *pre;
 int count = 0;
 
-Grafo graphInit(int V){
+void push(int v)
+{
+
+    Pilha *novo = malloc(sizeof(struct Pilha));
+    novo->v = v;
+    novo->prox = topo;
+    topo = novo;
+}
+
+int pop()
+{
+    if (!topo)
+    {
+        printf("Pilha vazia ! \n");
+        return -1;
+    }
+
+    Pilha *aux = topo;
+    topo = topo->prox;
+    int v = aux->v;
+
+    free(aux);
+    return v;
+}
+
+Grafo graphInit(int V)
+{
 
     Grafo g = malloc(sizeof(*g));
     g->V = V;
     g->e = 0;
-    g->adj = matrizInit(V,V,0);
+    g->adj = matrizInit(V, V, 0);
 
     pre = malloc(sizeof(int) * V);
 
-    for(int i = 0; i < V; i++){
+    for (int i = 0; i < V; i++)
+    {
         pre[i] = -1;
     }
 
     return g;
 }
 
-int **matrizInit(int v, int w, int c){
-    int **m = malloc(sizeof(int *)*v);
+int **matrizInit(int v, int w, int c)
+{
+    int **m = malloc(sizeof(int *) * v);
 
-    for(int i = 0; i < v; i++){
+    for (int i = 0; i < v; i++)
+    {
         m[i] = malloc(sizeof(int) * w);
-        for(int j = 0; j < w; i++){
+        for (int j = 0; j < w; j++)
+        {
             m[i][j] = c;
         }
     }
@@ -46,7 +85,8 @@ int **matrizInit(int v, int w, int c){
     return m;
 }
 
-Edge edge(int v, int w){
+Edge edge(int v, int w)
+{
     Edge e;
     e.v = v;
     e.w = w;
@@ -54,16 +94,18 @@ Edge edge(int v, int w){
     return e;
 }
 
-void insertEdge(Grafo g, Edge e){
+void insertEdge(Grafo g, Edge e)
+{
     int v = e.v;
     int w = e.w;
 
     g->adj[v][w] = 1;
     g->adj[w][v] = 1;
-    g->e ++;
+    g->e++;
 }
 
-void removeEdge(Grafo g, Edge e){
+void removeEdge(Grafo g, Edge e)
+{
     int v = e.v;
     int w = e.w;
 
@@ -72,19 +114,37 @@ void removeEdge(Grafo g, Edge e){
     g->e--;
 }
 
-void dfs(Grafo g, Edge e){
+void dfs(Grafo g, Edge e)
+{
 
     int w = e.w;
     pre[w] = count++;
 
-    for(int i = 0; i < g->V; i++){
-        if(g->adj[w][i] == 1 && pre[i] == 0){
+    for (int i = 0; i < g->V; i++)
+    {
+        if (g->adj[w][i] == 1 && pre[i] == -1)
+        {
             printf("( %d , %d )\n", e.w, i);
-            dfs(g, edge(w,i));
+            dfs(g, edge(w, i));
         }
     }
 }
 
+void dfsInterativa(Grafo g, int start)
+{
+    push(start);
 
+    while (topo != NULL)
+    {
 
+        int a = pop();
+        pre[a] = count++;
 
+        for (int i = 0; i < g->V; i++)
+        {
+            if (g->adj[a][i] == 1 && pre[i] == -1){
+                push(i);
+            }
+        }
+    }
+}
