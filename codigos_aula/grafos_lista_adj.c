@@ -57,15 +57,7 @@ void graphInsert(Graph g, Edge e){
 
 //Função para remover
 void graphRemove(Graph g, Edge e){
-    int v = e.v;
-    int w = e.w;
 
-    link l = g->listaAdj[v], r = g->listaAdj[w];
-    g->listaAdj[v] = g->listaAdj[v]->next;
-    g->listaAdj[w] = g->listaAdj[w]->next;
-
-    free(l);
-    free(r);
 }
 
 //Função que cria aresta
