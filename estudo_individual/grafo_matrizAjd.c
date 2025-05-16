@@ -26,6 +26,9 @@ int** matrizInit(int v, int w, int c){
     return m;
 }
 
+int count;
+int *pre;
+
 Graph graphInit(int V){
 
     Graph g = malloc(sizeof(*g));
