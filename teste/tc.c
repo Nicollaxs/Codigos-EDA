@@ -8,6 +8,7 @@ typedef struct Grafo
     int V;
     int e;
     int **adj;
+    int **tc;
 } *Grafo;
 
 typedef struct Edge
@@ -142,10 +143,35 @@ void dfsInterativa(Grafo g, int start)
 
         for (int i = 0; i < g->V; i++)
         {
-            if (g->adj[a][i] == 1 && pre[i] == -1){
+            if (g->adj[a][i] == 1 && pre[i] == -1)
+            {
                 push(i);
             }
         }
     }
 }
 
+void GRAPHtc(Grafo g)
+{
+    int i, s, t;
+
+    g->tc = matrizInit(g->V, g->V, 0);
+
+    for (s = 0; s < g->V; s++)
+        for (t = 0; t < g->V; t++)
+            g->tc[s][t] = g->adj[s][t];
+
+    for (s = 0; s < g->V; s++)
+        g->tc[s][s] = 1;
+
+    for (i = 0; i < g->V; i++)     // COLUNAS
+        for (s = 0; s < g->V; s++) // LINHAS
+            if (g->tc[s][i] == 1)
+                for (t = 0; t < g->V; t++)
+                    if (g->tc[i][t] == 1)
+                        g->tc[s][t] = 1;
+}
+
+void teste(){
+    printf("Teste");
+}
