@@ -151,19 +151,24 @@ void dfsInterativa(Grafo g, int start)
     }
 }
 
+
+//Algoritimo para fecho transitivo (WARSHALL)
 void GRAPHtc(Grafo g)
 {
     int i, s, t;
 
     g->tc = matrizInit(g->V, g->V, 0);
 
+    // ESSE FOR COPIA A MATRIZ ADJ PARA TC
     for (s = 0; s < g->V; s++)
         for (t = 0; t < g->V; t++)
             g->tc[s][t] = g->adj[s][t];
 
+    // ESSE FOR FAZ A DIAGONAL DE TC SER 1
     for (s = 0; s < g->V; s++)
         g->tc[s][s] = 1;
 
+    // ESSE FOR APLICA O WARSHALL
     for (i = 0; i < g->V; i++)     // COLUNAS
         for (s = 0; s < g->V; s++) // LINHAS
             if (g->tc[s][i] == 1)
@@ -172,6 +177,22 @@ void GRAPHtc(Grafo g)
                         g->tc[s][t] = 1;
 }
 
-void teste(){
-    printf("Teste");
+
+//FECHO TRANSITIVO COM DFS RECURSIVA
+void dfsTcRecursiva(Grafo g, int origem, int atual) {
+    g->tc[origem][atual] = 1;
+
+    for (int i = 0; i < g->V; i++) {
+        if (g->adj[atual][i] && g->tc[origem][i] == 0) { 
+            dfsTcRecursiva(g, origem, i);
+        }
+    }
+}
+
+void GRAPHTc2(Grafo g) {
+    g->tc = matrizInit(g->V, g->V, 0);
+
+    for (int i = 0; i < g->V; i++) {
+        dfsTcRecursiva(g, i, i);
+    }
 }
