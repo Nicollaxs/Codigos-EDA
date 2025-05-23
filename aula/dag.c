@@ -14,7 +14,7 @@ typedef struct Grafo{
     int V;
     int e;
     link *adj;
-}Grafo;
+}*Grafo;
 
 typedef struct Edge{
     int v;
@@ -52,7 +52,7 @@ int count = 0;
 
 Grafo* graphInit(int V){
 
-    Grafo *grafo = malloc(sizeof(Grafo));
+    Grafo grafo = malloc(sizeof(*grafo));
     grafo->V = V;
     grafo->e = 0;
     grafo->adj = malloc(sizeof(link)*V);
@@ -165,39 +165,78 @@ Grafo graphReserve(Grafo g){
     return new;
 }
 
-int main() {
-    int V = 8; // número de vértices
-    Grafo *g = graphInit(V);
 
-    // Inserindo algumas arestas
-    insertEdge(g, edge(0, 2));
-    insertEdge(g, edge(0, 5));
-    insertEdge(g, edge(1, 7));
-    insertEdge(g, edge(2, 6));
-    insertEdge(g, edge(3, 4));
-    insertEdge(g, edge(3, 5));
-    insertEdge(g, edge(4, 5));
-    insertEdge(g, edge(4, 6));
-    insertEdge(g, edge(4, 7));
+////////////////////////////////// IMPLEMENTAÇÃO DE DAG COM DFS //////////////////////////////////////
 
-    printf("DFS Recursiva:\n");
-    count = 0;
-    for (int i = 0; i < V; i++) pre[i] = -1;
-    dfs(g, 0);
-    for (int i = 0; i < V; i++) {
-        printf("pre[%d] = %d\n", i, pre[i]);
+int cnt; // variável global usada para preencher o vetor ts
+
+void tsDfsRecursivo(Grafo g, int v, int ts[]) {
+    pre[v] = 0;
+    for(link t = g->adj[v]; t != NULL; t = t->prox) {
+        if(pre[t->valor] == -1)
+            tsDfsRecursivo(g, t->valor, ts);
     }
-
-    printf("\nDFS Iterativa:\n");
-    count = 0;
-    for (int i = 0; i < V; i++) pre[i] = -1;
-    dfsInterarivo(g, 0);
-    for (int i = 0; i < V; i++) {
-        printf("pre[%d] = %d\n", i, pre[i]);
-    }
-
-    return 0;
+    ts[cnt++] = v;
 }
+
+void dag(Grafo g, int ts[]) {
+    cnt = 0;
+    for(int v = 0; v < g->V; v++) {
+        ts[v] = -1;
+        pre[v] = -1;
+    }
+
+    for(int v = 0; v < g->V; v++) {
+        if(pre[v] == -1)
+            tsDfsRecursivo(g, v, ts);
+    }
+}
+
+
+///////////////////// IMPLEMENTAÇÃO DE DAG COM BSF ///////////////////////////////
+
+void dag_bsf(Grafo g, int ts[]){
+
+    for(int v = 0; v < g->V; v++){
+        ts[v] = -1;
+        in[v] = 0;
+    }
+
+    for(int v = 0; g->V; v++)
+        for(link l = g->adj[v]; l!= NULL; l = l->prox)
+            in[l->valor]++;
+        
+    queueInit(g->V);
+
+    for(int v = 0; v < g->V; v++){
+        if(in[v] == 0)
+            enqueue(v);
+    }
+
+    int cont = 0;
+
+    while(!queueIsEmpty()){
+        int v = dequeue();
+        ts[count++] = v;
+
+        for(link l = g->adj[v]; l!=NULL; l = l->prox){
+            in[l->valor]--;
+
+            if(in[l->valor] == 0)
+                enqueue(l->valor);
+        }
+    }
+}
+
+
+
+
+
+
+  
+
+
+
 
 
 
