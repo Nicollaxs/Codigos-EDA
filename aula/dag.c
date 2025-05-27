@@ -156,7 +156,7 @@ void dfsInterarivo(Grafo *g, int start){
 
 Grafo graphReserve(Grafo g){
     Grafo new = matrizInit(g->v, g->v, 0);
-    for(int i = 0; i < g->v; i++){
+    for(int i = 0; i < g->V; i++){
         for(link l = g->adj[i]; l != NULL; l = l->prox)
         {
             insertEdge(new, edge(l->valor, i));
@@ -202,7 +202,7 @@ void dag_bsf(Grafo g, int ts[]){
         in[v] = 0;
     }
 
-    for(int v = 0; g->V; v++)
+    for(int v = 0; v < g->V; v++)
         for(link l = g->adj[v]; l!= NULL; l = l->prox)
             in[l->valor]++;
         

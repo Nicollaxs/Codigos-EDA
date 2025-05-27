@@ -196,3 +196,5 @@ void GRAPHTc2(Grafo g) {
         dfsTcRecursiva(g, i, i);
     }
 }
+
+

@@ -1,43 +1,48 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//new Insert Remove GrafoInit edge
+// new Insert Remove GrafoInit edge
 
 typedef struct node *link;
 // anotar essa parte
-struct node{
+struct node
+{
     int valor;
-    link prox;  
+    link prox;
 };
 
-typedef struct Grafo{
+typedef struct Grafo
+{
     int V;
     int e;
     link *adj;
-}Grafo;
+} Grafo;
 
-typedef struct Edge{
+typedef struct Edge
+{
     int v;
     int w;
-}Edge;
+} Edge;
 
-typedef struct Pilha{
+typedef struct Pilha
+{
     int v;
     struct Pilha *prox;
-}Pilha;
-
+} Pilha;
 
 Pilha *topo = NULL;
 
-void push(int v){
+void push(int v)
+{
     Pilha *novo = malloc(sizeof(Pilha));
     novo->v = v;
     novo->prox = topo;
     topo = novo;
 }
 
-int pop(){
-    if(topo == NULL)
+int pop()
+{
+    if (topo == NULL)
         return -1;
 
     Pilha *p = topo;
@@ -50,58 +55,69 @@ int pop(){
 int *pre;
 int count = 0;
 
-Grafo* graphInit(int V){
+Grafo *graphInit(int V)
+{
 
     Grafo *grafo = malloc(sizeof(Grafo));
     grafo->V = V;
     grafo->e = 0;
-    grafo->adj = malloc(sizeof(link)*V);
+    grafo->adj = malloc(sizeof(link) * V);
 
-    for(int i = 0; i < V; i ++){
+    for (int i = 0; i < V; i++)
+    {
         grafo->adj[i] = NULL;
     }
 
     pre = malloc(sizeof(int) * V);
 
-    for(int i = 0; i < V; i++){
+    for (int i = 0; i < V; i++)
+    {
         pre[i] = -1;
     }
 
     return grafo;
 }
 
-link new(int valor, link prox){
+link new(int valor, link prox)
+{
     link l = malloc(sizeof(struct node));
     l->valor = valor;
-    l->prox = prox; 
+    l->prox = prox;
     return l;
 }
 
-Edge edge(int v, int w) {
+Edge edge(int v, int w)
+{
     Edge e = {v, w};
     return e;
 }
 
-
-void insertEdge(Grafo *g, Edge e){
+void insertEdge(Grafo *g, Edge e)
+{
     int v = e.v;
     int w = e.w;
 
     g->adj[v] = new(w, g->adj[v]);
-    g->adj[w] = new(v,g->adj[w]);
-    g->e ++; 
+    g->adj[w] = new(v, g->adj[w]);
+    g->e++;
 }
 
-void removeEd(Grafo *g, int v, int w){
+void removeEd(Grafo *g, int v, int w)
+{
 
     link atual = g->adj[v];
     link anterior = NULL;
 
-    while(atual){
-        if(atual->valor == w){
-            if(anterior == NULL){
+    while (atual)
+    {
+        if (atual->valor == w)
+        {
+            if (anterior == NULL)
+            {
                 g->adj[v] = atual->prox;
-            } else {
+            }
+            else
+            {
                 anterior->prox = atual->prox;
             }
             free(atual);
@@ -112,60 +128,68 @@ void removeEd(Grafo *g, int v, int w){
     }
 }
 
-void removeEdge(Grafo *g, Edge e){
-    
+void removeEdge(Grafo *g, Edge e)
+{
+
     int v = e.v;
     int w = e.w;
 
-    removeEd(g,v,w);
-    removeEd(g,w,v);
+    removeEd(g, v, w);
+    removeEd(g, w, v);
 
     g->e--;
 }
 
-void dfs(Grafo *g, int w){
+void dfs(Grafo *g, int w)
+{
 
     pre[w] = count++;
 
     link l;
-    for(l = g->adj[w]; l != NULL; l = l->prox){
-        if(pre[l->valor] == -1){
+    for (l = g->adj[w]; l != NULL; l = l->prox)
+    {
+        if (pre[l->valor] == -1)
+        {
             dfs(g, l->valor);
         }
     }
 }
 
-void dfsInterarivo(Grafo *g, int start){
-    
+void dfsInterarivo(Grafo *g, int start)
+{
+
     push(start);
 
-    while(topo != NULL){
+    while (topo != NULL)
+    {
         int v = pop();
 
-        if(pre[v] == -1){
-            pre[v] = count ++;
-        }
+        if (pre[v] == -1)
+        {
+            pre[v] = count++;
 
-        for(link l = g->adj[v]; l != NULL; l = l->prox){
-            if(pre[l->valor] == -1){
-                push(l->valor);
+            for (link l = g->adj[v]; l != NULL; l = l->prox)
+            {
+                if (pre[l->valor] == -1)
+                    push(l->valor);
             }
         }
     }
 }
 
-Grafo graphReserve(Grafo g){
-    Grafo new = matrizInit(g->v, g->v, 0);
-    for(int i = 0; i < g->v; i++){
-        for(link l = g->adj[i]; l != NULL; l = l->prox)
-        {
-            insertEdge(new, edge(l->valor, i));
-        }
-    }
-    return new;
-}
+// Grafo graphReserve(Grafo g){
+//     Grafo new = matrizInit(g->v, g->v, 0);
+//     for(int i = 0; i < g->v; i++){
+//         for(link l = g->adj[i]; l != NULL; l = l->prox)
+//         {
+//             insertEdge(new, edge(l->valor, i));
+//         }
+//     }
+//     return new;
+// }
 
-int main() {
+int main()
+{
     int V = 8; // número de vértices
     Grafo *g = graphInit(V);
 
@@ -182,22 +206,23 @@ int main() {
 
     printf("DFS Recursiva:\n");
     count = 0;
-    for (int i = 0; i < V; i++) pre[i] = -1;
+    for (int i = 0; i < V; i++)
+        pre[i] = -1;
     dfs(g, 0);
-    for (int i = 0; i < V; i++) {
+    for (int i = 0; i < V; i++)
+    {
         printf("pre[%d] = %d\n", i, pre[i]);
     }
 
     printf("\nDFS Iterativa:\n");
     count = 0;
-    for (int i = 0; i < V; i++) pre[i] = -1;
+    for (int i = 0; i < V; i++)
+        pre[i] = -1;
     dfsInterarivo(g, 0);
-    for (int i = 0; i < V; i++) {
+    for (int i = 0; i < V; i++)
+    {
         printf("pre[%d] = %d\n", i, pre[i]);
     }
 
     return 0;
 }
-
-
-
