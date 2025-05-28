@@ -104,12 +104,10 @@ int main()
     scanf("%d %d", &quantidadeAnimais, &quantidadeRelacoes);
     Graph g = graphInit(quantidadeAnimais);
 
-
     for (int i = 0; i < quantidadeAnimais; i++)
     {
         scanf("%s", animais[i]);
     }
-
 
     for (int i = 0; i < quantidadeRelacoes; i++)
     {
@@ -122,21 +120,22 @@ int main()
 
     int visited[quantidadeAnimais];
 
-    for(int i = 0; i < quantidadeAnimais; i++){
+    for (int i = 0; i < quantidadeAnimais; i++)
+    {
         visited[i] = -1;
     }
 
     int max = 0;
 
-    for(int i = 0; i < quantidadeAnimais; i++){
-        int len = dfs(g,i,visited);
+    for (int i = 0; i < quantidadeAnimais; i++)
+    {
+        int len = dfs(g, i, visited);
 
-        if(len > max)
+        if (len > max)
             max = len;
     }
 
     printf("%d\n", max);
-
 
     return 0;
 }
