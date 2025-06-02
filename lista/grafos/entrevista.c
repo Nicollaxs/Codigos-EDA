@@ -5,7 +5,7 @@ typedef struct Graph
 {
     int v, e;
     int **adj;
-} * Graph;
+} *Graph;
 
 typedef struct Edge
 {
