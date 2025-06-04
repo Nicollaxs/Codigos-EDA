@@ -139,14 +139,14 @@ void removeEdge(Grafo g, int v, int w)
     }
 }
 
-void removeE(Grafo g, Edge e){
+void removeE(Grafo g, Edge e)
+{
 
     int v = e.v;
     int w = e.w;
 
-    removeEdge(g,v,w);
-    removeEdge(g,w,v);
-
+    removeEdge(g, v, w);
+    removeEdge(g, w, v);
 }
 
 void bfs(Grafo g, int start)
@@ -165,7 +165,6 @@ void bfs(Grafo g, int start)
             {
                 enqueue(l->v);
                 visitados[l->v] = contador++;
-
             }
         }
     }

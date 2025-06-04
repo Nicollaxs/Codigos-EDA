@@ -1,43 +1,48 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//new Insert Remove GrafoInit edge
+// new Insert Remove GrafoInit edge
 
 typedef struct node *link;
 // anotar essa parte
-struct node{
+struct node
+{
     int valor;
-    link prox;  
+    link prox;
 };
 
-typedef struct Grafo{
+typedef struct Grafo
+{
     int V;
     int e;
     link *adj;
-}*Grafo;
+} *Grafo;
 
-typedef struct Edge{
+typedef struct Edge
+{
     int v;
     int w;
-}Edge;
+} Edge;
 
-typedef struct Pilha{
+typedef struct Pilha
+{
     int v;
     struct Pilha *prox;
-}Pilha;
-
+} Pilha;
 
 Pilha *topo = NULL;
 
-void push(int v){
+void push(int v)
+{
     Pilha *novo = malloc(sizeof(Pilha));
     novo->v = v;
     novo->prox = topo;
     topo = novo;
 }
 
-int pop(){
-    if(topo == NULL)
+int pop()
+{
+    if (topo == NULL)
         return -1;
 
     Pilha *p = topo;
@@ -50,58 +55,69 @@ int pop(){
 int *pre;
 int count = 0;
 
-Grafo* graphInit(int V){
+Grafo *graphInit(int V)
+{
 
     Grafo grafo = malloc(sizeof(*grafo));
     grafo->V = V;
     grafo->e = 0;
-    grafo->adj = malloc(sizeof(link)*V);
+    grafo->adj = malloc(sizeof(link) * V);
 
-    for(int i = 0; i < V; i ++){
+    for (int i = 0; i < V; i++)
+    {
         grafo->adj[i] = NULL;
     }
 
     pre = malloc(sizeof(int) * V);
 
-    for(int i = 0; i < V; i++){
+    for (int i = 0; i < V; i++)
+    {
         pre[i] = -1;
     }
 
     return grafo;
 }
 
-link new(int valor, link prox){
+link new(int valor, link prox)
+{
     link l = malloc(sizeof(struct node));
     l->valor = valor;
-    l->prox = prox; 
+    l->prox = prox;
     return l;
 }
 
-Edge edge(int v, int w) {
+Edge edge(int v, int w)
+{
     Edge e = {v, w};
     return e;
 }
 
-
-void insertEdge(Grafo *g, Edge e){
+void insertEdge(Grafo *g, Edge e)
+{
     int v = e.v;
     int w = e.w;
 
     g->adj[v] = new(w, g->adj[v]);
-    g->adj[w] = new(v,g->adj[w]);
-    g->e ++; 
+    g->adj[w] = new(v, g->adj[w]);
+    g->e++;
 }
 
-void removeEd(Grafo *g, int v, int w){
+void removeEd(Grafo *g, int v, int w)
+{
 
     link atual = g->adj[v];
     link anterior = NULL;
 
-    while(atual){
-        if(atual->valor == w){
-            if(anterior == NULL){
+    while (atual)
+    {
+        if (atual->valor == w)
+        {
+            if (anterior == NULL)
+            {
                 g->adj[v] = atual->prox;
-            } else {
+            }
+            else
+            {
                 anterior->prox = atual->prox;
             }
             free(atual);
@@ -112,52 +128,63 @@ void removeEd(Grafo *g, int v, int w){
     }
 }
 
-void removeEdge(Grafo *g, Edge e){
-    
+void removeEdge(Grafo *g, Edge e)
+{
+
     int v = e.v;
     int w = e.w;
 
-    removeEd(g,v,w);
-    removeEd(g,w,v);
+    removeEd(g, v, w);
+    removeEd(g, w, v);
 
     g->e--;
 }
 
-void dfs(Grafo *g, int w){
+void dfs(Grafo *g, int w)
+{
 
     pre[w] = count++;
 
     link l;
-    for(l = g->adj[w]; l != NULL; l = l->prox){
-        if(pre[l->valor] == -1){
+    for (l = g->adj[w]; l != NULL; l = l->prox)
+    {
+        if (pre[l->valor] == -1)
+        {
             dfs(g, l->valor);
         }
     }
 }
 
-void dfsInterarivo(Grafo *g, int start){
-    
+void dfsInterarivo(Grafo *g, int start)
+{
+
     push(start);
 
-    while(topo != NULL){
+    while (topo != NULL)
+    {
         int v = pop();
 
-        if(pre[v] == -1){
-            pre[v] = count ++;
+        if (pre[v] == -1)
+        {
+            pre[v] = count++;
         }
 
-        for(link l = g->adj[v]; l != NULL; l = l->prox){
-            if(pre[l->valor] == -1){
+        for (link l = g->adj[v]; l != NULL; l = l->prox)
+        {
+            if (pre[l->valor] == -1)
+            {
                 push(l->valor);
             }
         }
     }
 }
 
-Grafo graphReserve(Grafo g){
-    Grafo new = matrizInit(g->v, g->v, 0);
-    for(int i = 0; i < g->V; i++){
-        for(link l = g->adj[i]; l != NULL; l = l->prox)
+Grafo graphReserve(Grafo g)
+{
+    Grafo new = graphInit(g->V);
+    for (int i = 0; i < g->V; i++)
+    {
+        for (link l = g->adj[i]; l != NULL; l = l->prox)
         {
             insertEdge(new, edge(l->valor, i));
         }
@@ -165,78 +192,106 @@ Grafo graphReserve(Grafo g){
     return new;
 }
 
-
 ////////////////////////////////// IMPLEMENTAÇÃO DE DAG COM DFS //////////////////////////////////////
 
 int cnt; // variável global usada para preencher o vetor ts
 
-void tsDfsRecursivo(Grafo g, int v, int ts[]) {
+void tsDfsRecursivo(Grafo g, int v, int ts[])
+{
     pre[v] = 0;
-    for(link t = g->adj[v]; t != NULL; t = t->prox) {
-        if(pre[t->valor] == -1)
+    for (link t = g->adj[v]; t != NULL; t = t->prox)
+    {
+        if (pre[t->valor] == -1)
             tsDfsRecursivo(g, t->valor, ts);
     }
     ts[cnt++] = v;
 }
 
-void dag(Grafo g, int ts[]) {
+void dag(Grafo g, int ts[])
+{
     cnt = 0;
-    for(int v = 0; v < g->V; v++) {
+    for (int v = 0; v < g->V; v++)
+    {
         ts[v] = -1;
         pre[v] = -1;
     }
 
-    for(int v = 0; v < g->V; v++) {
-        if(pre[v] == -1)
+    for (int v = 0; v < g->V; v++)
+    {
+        if (pre[v] == -1)
             tsDfsRecursivo(g, v, ts);
     }
+}
+
+int tempo = 0;
+void dfs(Grafo g, Edge e)
+{
+    int w = e.w;
+    pre[w] = tempo++;
+
+    for (link l = g->adj[w]; l != NULL; l = l->prox)
+    {
+        if (pre[l->valor] == -1)
+        {
+            dfs(g, edge(w, l->v));
+        }
+        else
+        {
+            if (pos[l->valor] == -1)
+            {
+                printf("Ciclo detectado\n");
+            }
+            else if (pre[l->valor] < pos[l->valor])
+            {
+                printf("Aresta cruzada\n");
+            }
+            else
+            {
+                printf("Aresta avanço\n");
+            }
+        }
+    }
+
+    pos[w] = tempo++;
 }
 
 
 ///////////////////// IMPLEMENTAÇÃO DE DAG COM BSF ///////////////////////////////
 
-void dag_bsf(Grafo g, int ts[]){
+void dag_bsf(Grafo g, int ts[])
+{
 
-    for(int v = 0; v < g->V; v++){
+    for (int v = 0; v < g->V; v++)
+    {
         ts[v] = -1;
         in[v] = 0;
     }
 
-    for(int v = 0; v < g->V; v++)
-        for(link l = g->adj[v]; l!= NULL; l = l->prox)
+    for (int v = 0; v < g->V; v++)
+        for (link l = g->adj[v]; l != NULL; l = l->prox)
             in[l->valor]++;
-        
+
     queueInit(g->V);
 
-    for(int v = 0; v < g->V; v++){
-        if(in[v] == 0)
+    for (int v = 0; v < g->V; v++)
+    {
+        if (in[v] == 0)
             enqueue(v);
     }
 
     int cont = 0;
 
-    while(!queueIsEmpty()){
+    while (!queueIsEmpty())
+    {
         int v = dequeue();
         ts[count++] = v;
 
-        for(link l = g->adj[v]; l!=NULL; l = l->prox){
+        for (link l = g->adj[v]; l != NULL; l = l->prox)
+        {
             in[l->valor]--;
 
-            if(in[l->valor] == 0)
+            if (in[l->valor] == 0)
                 enqueue(l->valor);
         }
     }
 }
-
-
-
-
-
-
-  
-
-
-
-
-
-
