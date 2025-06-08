@@ -171,8 +171,8 @@ void GRAPHtc(Grafo g)
     for (i = 0; i < g->V; i++)     // COLUNAS
         for (s = 0; s < g->V; s++) // LINHAS
             for (t = 0; t < g->V; t++)
-                if (g->tc[s][i] == 1 &&  g->tc[i][t] == 1)
-                        g->tc[s][t] = 1;
+                if (g->tc[s][i] == 1 && g->tc[i][t] == 1)
+                    g->tc[s][t] = 1;
 }
 
 // FECHO TRANSITIVO COM DFS RECURSIVA
@@ -188,7 +188,6 @@ void dfsTcRecursiva(Grafo g, int origem, int atual)
         }
     }
 }
-
 
 void GRAPHTc2(Grafo g)
 {

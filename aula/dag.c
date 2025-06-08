@@ -223,57 +223,24 @@ void dag(Grafo g, int ts[])
     }
 }
 
-int tempo = 0;
-void dfs(Grafo g, Edge e)
-{
-    int w = e.w;
-    pre[w] = tempo++;
-
-    for (link l = g->adj[w]; l != NULL; l = l->prox)
-    {
-        if (pre[l->valor] == -1)
-        {
-            dfs(g, edge(w, l->v));
-        }
-        else
-        {
-            if (pos[l->valor] == -1)
-            {
-                printf("Ciclo detectado\n");
-            }
-            else if (pre[l->valor] < pos[l->valor])
-            {
-                printf("Aresta cruzada\n");
-            }
-            else
-            {
-                printf("Aresta avanço\n");
-            }
-        }
-    }
-
-    pos[w] = tempo++;
-}
-
-
 ///////////////////// IMPLEMENTAÇÃO DE DAG COM BSF ///////////////////////////////
 
 void dag_bsf(Grafo g, int ts[])
 {
 
-    for (int v = 0; v < g->V; v++)
+    for (int v = 0; v < g->V; v++) //Inicializa vetores
     {
         ts[v] = -1;
-        in[v] = 0;
+        in[v] = 0; //significa quantas arestas estão chegando
     }
 
-    for (int v = 0; v < g->V; v++)
+    for (int v = 0; v < g->V; v++) //Contabiliza quantas arestas chegam em cada vertice
         for (link l = g->adj[v]; l != NULL; l = l->prox)
             in[l->valor]++;
 
     queueInit(g->V);
 
-    for (int v = 0; v < g->V; v++)
+    for (int v = 0; v < g->V; v++) // Verifica quais são os vertices com 0 arestas chegando e enfileira eles
     {
         if (in[v] == 0)
             enqueue(v);
@@ -281,17 +248,17 @@ void dag_bsf(Grafo g, int ts[])
 
     int cont = 0;
 
-    while (!queueIsEmpty())
+    while (!queueIsEmpty()) 
     {
         int v = dequeue();
-        ts[count++] = v;
+        ts[count++] = v; //Coloca o vertice no vetor de ordenação
 
-        for (link l = g->adj[v]; l != NULL; l = l->prox)
+        for (link l = g->adj[v]; l != NULL; l = l->prox) //Verifica seus vizinhos e decrementa um 
         {
             in[l->valor]--;
 
             if (in[l->valor] == 0)
-                enqueue(l->valor);
+                enqueue(l->valor); // caso for 0 enfileira
         }
     }
 }
