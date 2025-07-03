@@ -145,6 +145,36 @@ bool bellmanFord(Graph g, int s, int *dist, int *pa)
     }
 }
 
+// Assumindo que a estrutura Graph e link (adjacência) estão definidas,
+// por exemplo, como em livros como o de Sedgewick:
+//
+// typedef struct node *link;
+// struct node { int w; link prox; };
+// struct graph { int V; int E; link *adj; };
+// typedef struct graph *Graph;
+
+int grauX(Graph g, int *chi) {
+    int grau = 0; // Inicializar o grau com 0 é crucial.
+
+    // Itera por todos os vértices do grafo
+    for (int i = 0; i < g->V; i++) { // Use g->V para o número de vértices (assumindo V maiúsculo)
+        // Se o vértice 'i' pertence ao conjunto X (chi[i] é verdadeiro/1)
+        if (chi[i]) {
+            // Percorre a lista de adjacência de 'i'
+            for (link a = g->adj[i]; a != NULL; a = a->prox) {
+                int vizinho = a->w; // O vértice vizinho de 'i'
+
+                // Verifica se o vizinho 'vizinho' NÃO pertence ao conjunto X
+                // Se chi[vizinho] é 0/false, significa que está fora de X
+                if (!chi[vizinho]) {
+                    grau++; // Esta aresta (i, vizinho) contribui para o leque
+                }
+            }
+        }
+    }
+    return grau;
+}
+
 
 
 int main() {

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MAXV 1000
 // new Insert Remove GrafoInit edge
 
 typedef struct node *link;
