@@ -120,7 +120,7 @@ void prim(Grafo g, int *pa) {
     }
 
     pa[0] = 0;
-    tree[0] = true;
+    tree[0] = true;    
 
     for(link a = g->adj[0]; a!=NULL; a++){
         pa[a->w] = 0;
